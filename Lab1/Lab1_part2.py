@@ -14,13 +14,30 @@ def displayPyramid(size: int) -> None:
   6 5 4 3 2 1 2 3 4 5 6
 7 6 5 4 3 2 1 2 3 4 5 6 7
     """
+    # for loops
+    # for i in range(1, size + 1):
+    #     for j in range(1, size - i + 1):
+    #         print(end=" ")
+    #     for k in range(i, 0, -1):
+    #         print(k, end=" ")
+    #     for m in range(2, i + 1):
+    #         print(m, end=" ")
+    #     print("")
+
+    # while loops
     for i in range(1, size + 1):
-        for j in range(1, size - i + 1):
+        j = 1
+        while j < size - i + 1:
             print(end=" ")
-        for k in range(i, 0, -1):
+            j += 1
+        k = i
+        while k > 0:
             print(k, end=" ")
-        for m in range(2, i + 1):
+            k -= 1
+        m = 2
+        while m < i + 1:
             print(m, end=" ")
+            m += 1
         print("")
 
     pass  # remove this line, it is here for now for the code to be valid
