@@ -14,31 +14,22 @@ def displayPyramid(size: int) -> None:
   6 5 4 3 2 1 2 3 4 5 6
 7 6 5 4 3 2 1 2 3 4 5 6 7
     """
-    # for loops
-    # for i in range(1, size + 1):
-    #     for j in range(1, size - i + 1):
-    #         print(end=" ")
-    #     for k in range(i, 0, -1):
-    #         print(k, end=" ")
-    #     for m in range(2, i + 1):
-    #         print(m, end=" ")
-    #     print("")
-
-    # while loops
-    for i in range(1, size + 1):
+    
+    for i in range(1, size + 1):        # iterate thru number of triangles
+        # 3 inner loops
         j = 1
-        while j < size - i + 1:
+        while j < size - i + 1:         # first inner loop print front spaces
             print(end=" ")
             j += 1
         k = i
-        while k > 0:
+        while k > 0:                    # second inner loop prints left side of triangle 
             print(k, end=" ")
             k -= 1
         m = 2
-        while m < i + 1:
+        while m < i + 1:                # third inner loop prints right side of triangle
             print(m, end=" ")
             m += 1
-        print("")
+        print("")                       
 
     pass  # remove this line, it is here for now for the code to be valid
 

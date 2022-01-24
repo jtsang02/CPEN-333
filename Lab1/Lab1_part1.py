@@ -10,10 +10,13 @@ def solveQuadratic(a: float, b: float, c: float) -> str:
         described in the specification.
     """
     discriminant = b * b - (4 * a * c)
+    
     if discriminant < 0:
         return ("No real roots")
+
     elif discriminant == 0:
         return(f"The root is {-b / (2 * a):.2f}")
+
     else:
         r1 = (-b + math.sqrt(discriminant)) / (2 * a)
         r2 = (-b - math.sqrt(discriminant)) / (2 * a)
