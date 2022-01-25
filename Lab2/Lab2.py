@@ -1,5 +1,6 @@
 # student name:     Josiah Tsang
 # student number:   74191248
+from queue import Full
 import random
 
 class TicTacToe:
@@ -18,24 +19,61 @@ class TicTacToe:
 
     def printBoard(self) -> None:
         """ prints the board on the screen based on the values in the self.board data field """
-        pass #To Implement
+        print()
+        print(self.board[0],"|", self.board[1], "|", self.board[2],"   ", "0 | 1 | 2")  # first line
+        print("--+---+--","   ", "--+---+--")                                           # line separation
+        print(self.board[3],"|", self.board[4],"|", self.board[5],"   ", "3 | 4 | 5 ")  # second line
+        print("--+---+--","   ", "--+---+--")                                           # line separation
+        print(self.board[6],"|", self.board[7],"|", self.board[8],"   ", "6 | 7 | 8 ")  # second line
+        print()
 
     def playerNextMove(self) -> None:
         """ prompts the player for a valid cell number; 
             error checks that the input is a valid cell number; 
             and prints the info and the updated self.board;
         """
-        pass #To Implement
+        while (True):
+            try:
+                x = int(input("Next move for X (state a valid cell num):"))
+                if (x in range(0,9)):
+                    if (x in self.played):
+                        print("Must enter a valid cell number")
+                    else:
+                        break
+                else:
+                    print("Must enter a valid cell number")            
+            except:
+                print("Must be an integer")              
+        self.played.add(x)
+        self.board[x] = 'X' 
+        print("you chose cell", x)  
+        self.printBoard()
 
     def computerNextMove(self) -> None:
         """ computer randomly chooses a valid cell, 
             and prints the info and the updated self.board 
         """
-        pass #To Implement
+        while (True):
+            o = random.randint(0,8)                  # choose random number in range 0, 8
+            if (o in self.played): continue          
+            else: break
+        print("Computer chose cell", o)
+        self.played.add(o)
+        self.board[o] = 'O'
+        self.printBoard()
 
     def hasWon(self, who: str) -> bool:
         """ returns True if who (being passed 'X' or 'O') has won, False otherwise """
-        pass #To Implement
+        # horizontal win conditions: {0, 1, 2}, {3, 4, 5}, {6, 7, 8}
+        # vertical win conditions: {0, 3, 6}, {1, 4, 7}, {2, 5, 8}
+        # diagonal win conditions: {0, 4, 8}, {2, 4, 6}
+        allWinCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], 
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+                    [0, 4, 8], [2, 4, 6]]
+        for winCombo in allWinCombos:
+            if all(self.board[move] == who for move in winCombo):
+                return True
+        return False
 
     def terminate(self, who: str) -> bool:
         """ returns True if who (being passed 'X' or 'O') has won or if it's a draw, False otherwise;
@@ -44,7 +82,18 @@ class TicTacToe:
                  "You lost! Thanks for playing." or 
                  "A draw! Thanks for playing."  
         """
-        pass #To Implement
+        if (self.hasWon(who)):
+            if (who == 'X'):
+                print("You won! Thanks for playing.")
+            else:
+                print("You lost! Thanks for playing.")
+            return True
+        else:
+            if (len(self.played) == 9):
+                print("A draw! Thanks for playing.")
+                return True
+            else:
+                return False    # keep playing
 
 if __name__ == "__main__":  # Use as is
     ttt = TicTacToe()  # initialize a game
