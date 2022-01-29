@@ -54,7 +54,7 @@ class TicTacToe:
             and prints the info and the updated self.board 
         """
         while (True):
-            o = random.randint(0,8)                  # choose random number in range 0, 8
+            o = random.randint(0,8)                  # choose random number from 0 to 8
             if (o in self.played): continue          
             else: break
         print("Computer chose cell", o)
