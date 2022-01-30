@@ -11,7 +11,10 @@ def checkColumn(puzzle: list, column: int):
         
         As usual, this function must not mutate puzzle 
     """
-    pass #To implement
+    validColumn = set()
+    for i in [c[column] for c in puzzle]:               # iterate thru values of column 'column' in puzzle
+        if i in range(1,10): validColumn.add(i)         # add to set if conditions met
+    print("Column", column, "valid" if len(validColumn) == 9 else "not valid") # check if set is 9
 
 def checkRow(puzzle: list, row: int):
     """ 
@@ -23,9 +26,12 @@ def checkRow(puzzle: list, row: int):
         
         As usual, this function must not mutate puzzle 
     """
-    pass #To implement
+    validRow = set()
+    for i in puzzle[row]:                       # iterate thru values of row 'row' in puzzle
+        if i in range(1,10): validRow.add(i)    # add to set if conditions met
+    print("Row", row, "valid" if len(validRow) == 9 else "not valid") # check if set is 9
 
-def checkSubgrid(puzzle: list, subgird: int):
+def checkSubgrid(puzzle: list, subgrid: int):
     """ 
         param puzzle: a list of lists containing the puzzle 
         param subgrid: the subgrid to check (a value between 0 to 8)
@@ -39,8 +45,19 @@ def checkSubgrid(puzzle: list, subgird: int):
         
         As usual, this function must not mutate puzzle 
     """
-    pass #To implement
+    rowRange = [0,3] if subgrid < 3 else [3,6] if subgrid < 6 else [6,9]
+    gridLayout = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+    for i in gridLayout:
+        if i[0] == subgrid: colRange = [0,3]
+        elif i[1] == subgrid: colRange = [3,6]
+        elif i[2] == subgrid: colRange = [6,9]
 
+    subList = set()
+    for row in puzzle[rowRange[0]:rowRange[1]]:             # iterate thru rows
+        for col in row[colRange[0]:colRange[1]]:            # iterate thru columns
+            if col in range(1,10): subList.add(col)
+        
+    print("Subgrid", subgrid, "valid" if len(subList) == 9 else "not valid") # check if set is 9
 
 if __name__ == "__main__":
     test1 = [ [6, 2, 4, 5, 3, 9, 1, 8, 7],
@@ -64,7 +81,7 @@ if __name__ == "__main__":
               [8, 3, 7, 6, 1, 4, 2, 9, 5 ]
             ]
     
-    testcase = test1   #modify here for other testcases
+    testcase = test1   #modifcol here for other testcases
     SIZE = 9
 
     for col in range(SIZE):  #checking all columns
