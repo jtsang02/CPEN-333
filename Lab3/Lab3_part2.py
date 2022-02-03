@@ -1,5 +1,8 @@
 #student name:      Josiah Tsang
-#student number:    74191248    
+#student number:    74191248 
+
+import multiprocessing as mp
+from random import randint
 
 def checkColumn(puzzle: list, column: int):
     """ 
@@ -59,6 +62,7 @@ def checkSubgrid(puzzle: list, subgrid: int):
     print("Subgrid", subgrid, "valid" if len(subList) == 9 else "not valid") # check if set is 9
 
 if __name__ == "__main__":
+    
     test1 = [ [6, 2, 4, 5, 3, 9, 1, 8, 7],
               [5, 1, 9, 7, 2, 8, 6, 3, 4],
               [8, 3, 7, 6, 1, 4, 2, 9, 5],
@@ -79,24 +83,28 @@ if __name__ == "__main__":
               [5, 1, 9, 7, 2, 8, 6, 3, 4],
               [8, 3, 7, 6, 1, 4, 2, 9, 5 ]
             ]
-
-    test3 = [ [6, 1, 4, 5, 3, 9 , 1, 8, 7],
-              [5, 1, 9, 7, 2, 8, 6, 3, 4],
-              [8, 3, 7, 6, 1, 4, 2, 9, 5 ],
-              [6, 2, 4, 5, 3, 9 , 1, 8, 7],
-              [5, 1, 9, 7, 2, 8, 6, 3, 4],
-              [8, 3, 7, 6, 1, 4, 2, 9, 5 ],
-              [6, 2, 4, 5, 3, 9 , 1, 8, 7],
-              [5, 1, 9, 7, 2, 8, 6, 3, 4],
-              [8, 3, 7, 6, 1, 4, 2, 1, 5 ]
-            ]
     
-    testcase = test3   #modifcol here for other testcases
+    testcase = test1   #modifcol here for other testcases
     SIZE = 9
 
-    for col in range(SIZE):  #checking all columns
-        checkColumn(testcase, col)
-    for row in range(SIZE):  #checking all rows
-        checkRow(testcase, row)
-    for subgrid in range(SIZE):   #checking all subgrids
-        checkSubgrid(testcase, subgrid)
+    # 9 processes for each
+    for val in range(SIZE):  
+        pColumn = mp.Process(target=checkColumn, args=(testcase, val))      #checking all columns
+        pRow = mp.Process(target=checkRow, args=(testcase, val))            #checking all rows
+        pSubgrid = mp.Process(target=checkSubgrid, args=(testcase, val))    #checking all subgrids
+        pColumn.start()
+        pRow.start()
+        pSubgrid.start()
+
+    for val in range(SIZE):
+        pRow.join()
+        pColumn.join()
+        pSubgrid.join()
+
+    # # 9 processes for rows
+    # for row in range(SIZE):  #checking all rows
+        
+
+
+    # for subgrid in range(SIZE):   
+    #     checkSubgrid(testcase, subgrid)
