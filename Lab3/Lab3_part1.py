@@ -1,6 +1,8 @@
 #student name:      Josiah Tsang
 #student number:    74191248    
 
+from time import time
+
 def checkColumn(puzzle: list, column: int):
     """ 
         param puzzle: a list of lists containing the puzzle 
@@ -59,6 +61,9 @@ def checkSubgrid(puzzle: list, subgrid: int):
     print("Subgrid", subgrid, "valid" if len(subList) == 9 else "not valid") # check if set is 9
 
 if __name__ == "__main__":
+
+    tic = time()
+
     test1 = [ [6, 2, 4, 5, 3, 9, 1, 8, 7],
               [5, 1, 9, 7, 2, 8, 6, 3, 4],
               [8, 3, 7, 6, 1, 4, 2, 9, 5],
@@ -100,3 +105,6 @@ if __name__ == "__main__":
         checkRow(testcase, row)
     for subgrid in range(SIZE):   #checking all subgrids
         checkSubgrid(testcase, subgrid)
+
+    time() - tic
+    print(time() - tic)

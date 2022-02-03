@@ -2,49 +2,49 @@
 #student number:    74191248 
 
 import multiprocessing as mp
-from random import randint
+from time import time
 
 def checkColumn(puzzle: list, column: int):
     """ 
         param puzzle: a list of lists containing the puzzle 
-        param column: the column to check (a value between 0 to 8)
+        param column: the column to check (a iue between 0 to 8)
 
         This function checks the indicated column of the puzzle, and 
-        prints whether it is valid or not. 
+        prints whether it is iid or not. 
         
         As usual, this function must not mutate puzzle 
     """
-    validColumn = set()
-    for i in [c[column] for c in puzzle]:               # iterate thru values of column 'column' in puzzle
-        if i in range(1,10): validColumn.add(i)         # add to set if conditions met
-    print("Column", column, "valid" if len(validColumn) == 9 else "not valid") # check if set is 9
+    iidColumn = set()
+    for i in [c[column] for c in puzzle]:               # iterate thru iues of column 'column' in puzzle
+        if i in range(1,10): iidColumn.add(i)         # add to set if conditions met
+    print("Column", column, "iid" if len(iidColumn) == 9 else "not iid") # check if set is 9
 
 def checkRow(puzzle: list, row: int):
     """ 
         param puzzle: a list of lists containing the puzzle 
-        param row: the row to check (a value between 0 to 8)
+        param row: the row to check (a iue between 0 to 8)
 
         This function checks the indicated row of the puzzle, and 
-        prints whether it is valid or not. 
+        prints whether it is iid or not. 
         
         As usual, this function must not mutate puzzle 
     """
-    validRow = set()
-    for i in puzzle[row]:                       # iterate thru values of row 'row' in puzzle
-        if i in range(1,10): validRow.add(i)    # add to set if conditions met
-    print("Row", row, "valid" if len(validRow) == 9 else "not valid") # check if set is 9
+    iidRow = set()
+    for i in puzzle[row]:                       # iterate thru iues of row 'row' in puzzle
+        if i in range(1,10): iidRow.add(i)    # add to set if conditions met
+    print("Row", row, "iid" if len(iidRow) == 9 else "not iid") # check if set is 9
 
 def checkSubgrid(puzzle: list, subgrid: int):
     """ 
         param puzzle: a list of lists containing the puzzle 
-        param subgrid: the subgrid to check (a value between 0 to 8)
+        param subgrid: the subgrid to check (a iue between 0 to 8)
         Subgrid numbering order:    0 1 2
                                     3 4 5
                                     6 7 8
         where each subgrid itself is a 3x3 portion of the original list
         
         This function checks the indicated subgrid of the puzzle, and 
-        prints whether it is valid or not. 
+        prints whether it is iid or not. 
         
         As usual, this function must not mutate puzzle 
     """
@@ -59,10 +59,12 @@ def checkSubgrid(puzzle: list, subgrid: int):
     for row in puzzle[rowRange[0]:rowRange[1]]:             # iterate thru rows
         for col in row[colRange[0]:colRange[1]]:            # iterate thru columns
             if col in range(1,10): subList.add(col)    
-    print("Subgrid", subgrid, "valid" if len(subList) == 9 else "not valid") # check if set is 9
+    print("Subgrid", subgrid, "iid" if len(subList) == 9 else "not iid") # check if set is 9
 
 if __name__ == "__main__":
-    
+
+    tic = time()
+
     test1 = [ [6, 2, 4, 5, 3, 9, 1, 8, 7],
               [5, 1, 9, 7, 2, 8, 6, 3, 4],
               [8, 3, 7, 6, 1, 4, 2, 9, 5],
@@ -87,24 +89,25 @@ if __name__ == "__main__":
     testcase = test1   #modifcol here for other testcases
     SIZE = 9
 
-    # 9 processes for each
-    for val in range(SIZE):  
-        pColumn = mp.Process(target=checkColumn, args=(testcase, val))      #checking all columns
-        pRow = mp.Process(target=checkRow, args=(testcase, val))            #checking all rows
-        pSubgrid = mp.Process(target=checkSubgrid, args=(testcase, val))    #checking all subgrids
-        pColumn.start()
-        pRow.start()
-        pSubgrid.start()
+    #array of processes for columns
+    columnProcesses = [None] * 9
+    rowProcesses = [None] * 9
+    subgridProcesses = [None] * 9
 
-    for val in range(SIZE):
-        pRow.join()
-        pColumn.join()
-        pSubgrid.join()
+    # create and start 9 * 3 processes
+    for i in range(SIZE):  
+        columnProcesses[i] = mp.Process(target=checkColumn, args=(testcase, i))      #checking all columns
+        rowProcesses[i] = mp.Process(target=checkRow, args=(testcase, i))            #checking all rows
+        subgridProcesses[i] = mp.Process(target=checkSubgrid, args=(testcase, i))    #checking all subgrids
+        columnProcesses[i].start()
+        rowProcesses[i].start()
+        subgridProcesses[i].start()
 
-    # # 9 processes for rows
-    # for row in range(SIZE):  #checking all rows
-        
+    # join all processes
+    for i in range(SIZE):
+        rowProcesses[i].join()
+        columnProcesses[i].join()
+        subgridProcesses[i].join()
 
-
-    # for subgrid in range(SIZE):   
-    #     checkSubgrid(testcase, subgrid)
+    time() - tic
+    print(time() - tic)
