@@ -60,9 +60,8 @@ def checkSubgrid(puzzle: list, subgrid: int):
             if col in range(1,10): subList.add(col)    
     print("Subgrid", subgrid, "valid" if len(subList) == 9 else "not valid") # check if set is 9
 
+tic = time()
 if __name__ == "__main__":
-
-    tic = time()
 
     test1 = [ [6, 2, 4, 5, 3, 9, 1, 8, 7],
               [5, 1, 9, 7, 2, 8, 6, 3, 4],
@@ -96,7 +95,7 @@ if __name__ == "__main__":
               [8, 3, 7, 6, 1, 4, 2, 1, 5 ]
             ]
     
-    testcase = test3   #modifcol here for other testcases
+    testcase = test1   #modifcol here for other testcases
     SIZE = 9
 
     for col in range(SIZE):  #checking all columns
@@ -106,5 +105,4 @@ if __name__ == "__main__":
     for subgrid in range(SIZE):   #checking all subgrids
         checkSubgrid(testcase, subgrid)
 
-    time() - tic
     print(time() - tic)
