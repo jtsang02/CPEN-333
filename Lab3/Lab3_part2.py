@@ -96,13 +96,12 @@ for i in range(SIZE):
     pRow = multiprocessing.Process(target=checkRow, args=(testcase, i))              #checking all rows
 
     if __name__ == "__main__":
-        pSubgrid.start()
-        processes.append(pSubgrid)
         pCol.start()
         processes.append(pCol)
         pRow.start()
         processes.append(pRow)
-
+        pSubgrid.start()
+        processes.append(pSubgrid)
 
 # start all processes
 # for p in processes:
