@@ -48,19 +48,15 @@ def checkSubgrid(puzzle: list, subgrid: int):
         As usual, this function must not mutate puzzle 
     """
     rowRange = [0,3] if subgrid < 3 else [3,6] if subgrid < 6 else [6,9]
-    gridLayout = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
-    for i in gridLayout:
-        if i[0] == subgrid: colRange = [0,3]
-        elif i[1] == subgrid: colRange = [3,6]
-        elif i[2] == subgrid: colRange = [6,9]
+    colRange = [0,3] if subgrid in [0,3,6] else [3,6] if subgrid in [1, 4, 7] else [6,9] 
 
     subList = set()
     for row in puzzle[rowRange[0]:rowRange[1]]:             # iterate thru rows
         for col in row[colRange[0]:colRange[1]]:            # iterate thru columns
-            if col in range(1,10): subList.add(col)    
+            if col in range(1,10): subList.add(col)
     print("Subgrid", subgrid, "valid" if len(subList) == 9 else "not valid") # check if set is 9
 
-tic = time()
+# tic = time()
 if __name__ == "__main__":
 
     test1 = [ [6, 2, 4, 5, 3, 9, 1, 8, 7],
@@ -95,7 +91,7 @@ if __name__ == "__main__":
               [8, 3, 7, 6, 1, 4, 2, 1, 5 ]
             ]
     
-    testcase = test1   #modifcol here for other testcases
+    testcase = test2   #modifcol here for other testcases
     SIZE = 9
 
     for col in range(SIZE):  #checking all columns
@@ -105,4 +101,4 @@ if __name__ == "__main__":
     for subgrid in range(SIZE):   #checking all subgrids
         checkSubgrid(testcase, subgrid)
 
-    print(time() - tic)
+    # print(time() - tic)

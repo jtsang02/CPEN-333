@@ -49,11 +49,7 @@ def checkSubgrid(puzzle: list, subgrid: int):
         As usual, this function must not mutate puzzle 
     """
     rowRange = [0,3] if subgrid < 3 else [3,6] if subgrid < 6 else [6,9]
-    gridLayout = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
-    for i in gridLayout:
-        if i[0] == subgrid: colRange = [0,3]
-        elif i[1] == subgrid: colRange = [3,6]
-        elif i[2] == subgrid: colRange = [6,9]
+    colRange = [0,3] if subgrid in [0,3,6] else [3,6] if subgrid in [1, 4, 7] else [6,9] 
 
     subList = set()
     for row in puzzle[rowRange[0]:rowRange[1]]:             # iterate thru rows
@@ -88,7 +84,7 @@ SIZE = 9
 #array of processes
 processes = []
 
-tic = time()
+# tic = time()
 
 for i in range(SIZE):  
     pSubgrid = multiprocessing.Process(target=checkSubgrid, args=(testcase, i))      #checking all subgrids
@@ -103,12 +99,8 @@ for i in range(SIZE):
         pSubgrid.start()
         processes.append(pSubgrid)
 
-# start all processes
-# for p in processes:
-#     p.start()
-
 # join all processes
 for p in processes:
     p.join()
 
-print("time=", time() - tic)
+# print("time=", time() - tic)
