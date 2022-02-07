@@ -84,7 +84,7 @@ SIZE = 9
 #array of processes
 processes = []
 
-# tic = time()
+tic = time()
 
 for i in range(SIZE):  
     pSubgrid = multiprocessing.Process(target=checkSubgrid, args=(testcase, i))      #checking all subgrids
@@ -103,4 +103,4 @@ for i in range(SIZE):
 for p in processes:
     p.join()
 
-# print("time=", time() - tic)
+print("time=", time() - tic)

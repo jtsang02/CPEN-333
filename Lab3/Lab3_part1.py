@@ -51,10 +51,11 @@ def checkSubgrid(puzzle: list, subgrid: int):
     colRange = [0,3] if subgrid in [0,3,6] else [3,6] if subgrid in [1, 4, 7] else [6,9] 
 
     subList = set()
-    for row in puzzle[rowRange[0]:rowRange[1]]:             # iterate thru rows
-        for col in row[colRange[0]:colRange[1]]:            # iterate thru columns
-            if col in range(1,10): subList.add(col)
+    for i in puzzle[rowRange[0]:rowRange[1]]:           # iterate thru rows
+        for j in i[colRange[0]:colRange[1]]:            # iterate thru columns
+            if j in range(1,10): subList.add(j)
     print("Subgrid", subgrid, "valid" if len(subList) == 9 else "not valid") # check if set is 9
+    return (True if len(subList) == 9 else False)
 
 # tic = time()
 if __name__ == "__main__":
@@ -91,7 +92,7 @@ if __name__ == "__main__":
               [8, 3, 7, 6, 1, 4, 2, 1, 5 ]
             ]
     
-    testcase = test2   #modifcol here for other testcases
+    testcase = test1   #modifcol here for other testcases
     SIZE = 9
 
     for col in range(SIZE):  #checking all columns
