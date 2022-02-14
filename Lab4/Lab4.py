@@ -21,11 +21,11 @@ def sortingWorker(firstHalf: bool) -> None:
     if firstHalf:
         # sort first half and store it in sortedFirstHalf   
         tempList = tempList[:midIndex]
-
     else:
         # sort second half and store it in sortedSecondHalf
         tempList = tempList[midIndex:]
-         
+    
+    # sort tempList and store into appropriate variable
 
 def mergingWorker() -> None:
     """ This function uses the two shared variables 
