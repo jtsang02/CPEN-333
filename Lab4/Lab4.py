@@ -15,17 +15,25 @@ def sortingWorker(firstHalf: bool) -> None:
        The sorting is ascending and you can choose any
        sorting algorithm of your choice and code it.
     """
-    tempList = testcase
-    midIndex = len(tempList) // 2
+    def sort(listToSort : list) -> None:                # inner function to sort half the list using insertion sort algorithm
+        for i in range(len(listToSort)):                # iterate thru list   
+            current = listToSort[i]                     # store current item in temp var
+            j = i - 1                                   # loop variable of sorted items (start from previous item)
+            while (j >= 0 and listToSort[j] > current): # iterate thru sorted items
+                listToSort[j + 1] = listToSort[j]       # copy item to the right 
+                j = j - 1                               # decrement loop variable
+            listToSort[j + 1] = current                 # after while loop, all greater items shifted to right, store current item
+
+    tempList = testcase                                 # copy testcase to new list        
+    midIndex = len(tempList) // 2                       # get midpoint index of list
         
-    if firstHalf:
-        # sort first half and store it in sortedFirstHalf   
-        tempList = tempList[:midIndex]
-    else:
-        # sort second half and store it in sortedSecondHalf
-        tempList = tempList[midIndex:]
+    if firstHalf: tempList = tempList[:midIndex]        # sort first half and store it in sortedFirstHalf                                                   # get first half of list 
+    else:         tempList = tempList[midIndex:]        # sort second half and store it in sortedSecondHalf   
     
-    # sort tempList and store into appropriate variable
+    sort(tempList)                                      # call inner function to sort half of list                          
+    for item in tempList:                               # add to appropriate shared variable
+        if firstHalf: sortedFirstHalf.append(item)      
+        else:         sortedSecondHalf.append(item)
 
 def mergingWorker() -> None:
     """ This function uses the two shared variables 
@@ -38,7 +46,9 @@ def mergingWorker() -> None:
 
 if __name__ == "__main__":
     #shared variables
-    testcase = [8,5,7,7,4,1,3,2]
+    testcase1 = [8,5,7,7,4,1,3,2]
+    testcase2 = [7, 3, 3, 2, 3, 1, 5, 8]
+    testcase = testcase2
     sortedFirstHalf: list = []
     sortedSecondHalf: list = []
     SortedFullList: list = []
@@ -47,8 +57,12 @@ if __name__ == "__main__":
     # use threading here
     
     sortingWorker(True)
-
+    print(sortedFirstHalf)
+    sortingWorker(False)
+    print(sortedSecondHalf)
+    
     #as a simple test, printing the final sorted list
     print("The final sorted list is ", SortedFullList)
 
     # https://www.geeksforgeeks.org/merge-sort/
+    # https://www.youtube.com/watch?v=nKzEJWbkPbQ&ab_channel=ProgrammingwithMosh
