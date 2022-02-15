@@ -27,13 +27,17 @@ def sortingWorker(firstHalf: bool) -> None:
     tempList = testcase                                 # copy testcase to new list        
     midIndex = len(tempList) // 2                       # get midpoint index of list
         
-    if firstHalf: tempList = tempList[:midIndex]        # sort first half and store it in sortedFirstHalf                                                   # get first half of list 
-    else:         tempList = tempList[midIndex:]        # sort second half and store it in sortedSecondHalf   
+    if firstHalf:
+        tempList = tempList[:midIndex]                  # sort first half and store it in sortedFirstHalf                                                   # get first half of list 
+    else:         
+        tempList = tempList[midIndex:]                  # sort second half and store it in sortedSecondHalf   
     
     sort(tempList)                                      # call inner function to sort half of list                          
     for item in tempList:                               # add to appropriate shared variable
-        if firstHalf: sortedFirstHalf.append(item)      
-        else:         sortedSecondHalf.append(item)
+        if firstHalf: 
+            sortedFirstHalf.append(item)      
+        else:
+            sortedSecondHalf.append(item)
     # print(f" sortedFirstHalf from thread {threading.current_thread().getName()}")
     # print(f"sortedSecondHalf from thread {threading.current_thread().getName()}")
 
@@ -43,9 +47,12 @@ def mergingWorker() -> None:
         them into a single sorted list that is stored in
         the shared variable sortedFullList.
     """
-
-    pass #to Implement
-
+    for i in sortedFirstHalf:
+        for j in sortedSecondHalf:
+            if j < i:
+                SortedFullList.append(j)
+        SortedFullList.append(i)
+            
 if __name__ == "__main__":
     #shared variables
     testcase1 = [8,5,7,7,4,1,3,2]
