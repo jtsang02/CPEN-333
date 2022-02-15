@@ -38,8 +38,7 @@ def sortingWorker(firstHalf: bool) -> None:
             sortedFirstHalf.append(item)      
         else:
             sortedSecondHalf.append(item)
-    # print(f" sortedFirstHalf from thread {threading.current_thread().getName()}")
-    # print(f"sortedSecondHalf from thread {threading.current_thread().getName()}")
+    print(f" {str(tempList)} from thread {threading.current_thread().name}")
 
 def mergingWorker() -> None:
     """ This function uses the two shared variables 
@@ -47,12 +46,23 @@ def mergingWorker() -> None:
         them into a single sorted list that is stored in
         the shared variable sortedFullList.
     """
-    for i in sortedFirstHalf:
-        for j in sortedSecondHalf:
-            if j < i:
-                SortedFullList.append(j)
-        SortedFullList.append(i)
-            
+    i = j = 0
+    size = len(sortedFirstHalf)
+    while i < size and j < size:
+        if sortedFirstHalf[i] < sortedSecondHalf[j]:
+            SortedFullList.append(sortedFirstHalf[i])
+            i = i + 1
+        else:
+            SortedFullList.append(sortedSecondHalf[j])
+            j = j + 1
+
+    for item in sortedFirstHalf[i:]:
+        SortedFullList.append(item)
+    for item in sortedSecondHalf[j:]:
+        SortedFullList.append(item)
+    
+    print(f" {str(SortedFullList)} from thread {threading.current_thread().name}")
+
 if __name__ == "__main__":
     #shared variables
     testcase1 = [8,5,7,7,4,1,3,2]
@@ -72,9 +82,6 @@ if __name__ == "__main__":
     t1.join()
     t2.join()
     
-    print(sortedFirstHalf)
-    print(sortedSecondHalf)
-
     t3 = threading.Thread(target = mergingWorker)
     t3.start()
     t3.join()
