@@ -68,6 +68,10 @@ if __name__ == "__main__":
     print(sortedFirstHalf)
     print(sortedSecondHalf)
 
+    t3 = threading.Thread(target = mergingWorker)
+    t3.start()
+    t3.join()
+
     #as a simple test, printing the final sorted list
     print("The final sorted list is ", SortedFullList)
 
