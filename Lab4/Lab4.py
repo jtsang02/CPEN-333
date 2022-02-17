@@ -21,7 +21,7 @@ def sortingWorker(firstHalf: bool) -> None:
             j = i - 1                                   # loop variable of sorted items (start from previous item)
             while (j >= 0 and listToSort[j] > current): # iterate thru sorted items
                 listToSort[j + 1] = listToSort[j]       # copy item to the right 
-                j = j - 1                               # decrement loop variable
+                j -= 1                                  # decrement loop variable
             listToSort[j + 1] = current                 # after while loop, all greater items shifted to right, store current item
 
     tempList = testcase                                 # copy testcase to new list        
@@ -32,13 +32,15 @@ def sortingWorker(firstHalf: bool) -> None:
     else:         
         tempList = tempList[midIndex:]                  # sort second half and store it in sortedSecondHalf   
     
-    sort(tempList)                                      # call inner function to sort half of list                          
-    for item in tempList:                               # add to appropriate shared variable
-        if firstHalf: 
+    sort(tempList)                                      # call inner function to sort half of list                        
+
+    for item in tempList:                               
+        if firstHalf:                                   # add to appropriate shared variable
             sortedFirstHalf.append(item)      
         else:
             sortedSecondHalf.append(item)
-    print(f" {str(tempList)} from thread {threading.current_thread().name}")
+            
+    # print(f" {str(tempList)} from thread {threading.current_thread().name}")
 
 def mergingWorker() -> None:
     """ This function uses the two shared variables 
@@ -46,29 +48,30 @@ def mergingWorker() -> None:
         them into a single sorted list that is stored in
         the shared variable sortedFullList.
     """
-    i = j = 0
-    size = len(sortedFirstHalf)
-    while i < size and j < size:
-        if sortedFirstHalf[i] < sortedSecondHalf[j]:
-            SortedFullList.append(sortedFirstHalf[i])
-            i = i + 1
-        else:
-            SortedFullList.append(sortedSecondHalf[j])
-            j = j + 1
+    i = j = 0                                           # set loop variables to 0
+    size = len(sortedFirstHalf)                         # size is len of half array
+    
+    while i < size and j < size:                        # traverse both lists before running out of values to compare on one list
+        if sortedFirstHalf[i] < sortedSecondHalf[j]:    # compare two values of list    
+            SortedFullList.append(sortedFirstHalf[i])   # if value in the firsthalf list is less, add to fullsorted list
+            i += 1                                      # move on to the next value in the firsthalf list
+        else:                                           
+            SortedFullList.append(sortedSecondHalf[j])  # otherwise value of secondhalf list is smaller, add this value to full sorted list
+            j += 1                                      # move on to the next value in the secondhalf list
 
-    for item in sortedFirstHalf[i:]:
+    for item in sortedFirstHalf[i:]:                    # if items left in firstHalf, add to fullsorted list
         SortedFullList.append(item)
-    for item in sortedSecondHalf[j:]:
+    for item in sortedSecondHalf[j:]:                   # otherewise add leftover items in secondhalf to fullsorted list
         SortedFullList.append(item)
     
-    print(f" {str(SortedFullList)} from thread {threading.current_thread().name}")
+    # print(f" {str(SortedFullList)} from thread {threading.current_thread().name}")
 
 if __name__ == "__main__":
     #shared variables
     testcase1 = [8,5,7,7,4,1,3,2]
     testcase2 = [7, 3, 3, 2, 3, 1, 5, 8]
     testcase3 = [7, -1, 3, 2, 1, 1, -5, 4]
-    testcase = testcase3
+    testcase = testcase1
     sortedFirstHalf: list = []
     sortedSecondHalf: list = []
     SortedFullList: list = []
@@ -89,5 +92,4 @@ if __name__ == "__main__":
     #as a simple test, printing the final sorted list
     print("The final sorted list is ", SortedFullList)
 
-    # https://www.geeksforgeeks.org/merge-sort/
     # https://www.youtube.com/watch?v=nKzEJWbkPbQ&ab_channel=ProgrammingwithMosh
