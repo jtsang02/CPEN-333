@@ -71,6 +71,9 @@ if __name__ == "__main__":
     testcase1 = [8,5,7,7,4,1,3,2]
     testcase2 = [7, 3, 3, 2, 3, 1, 5, 8]
     testcase3 = [7, -1, 3, 2, 1, 1, -5, 4]
+    testcase4 = []
+    testcase5 = [0]
+    testcase6 = [-5, 4, 2, -9]
     testcase = testcase1
     sortedFirstHalf: list = []
     sortedSecondHalf: list = []
@@ -80,16 +83,13 @@ if __name__ == "__main__":
     # use threading here
     t1 = threading.Thread(target = sortingWorker, kwargs={"firstHalf": True})
     t2 = threading.Thread(target = sortingWorker, kwargs={"firstHalf": False})
+    t3 = threading.Thread(target = mergingWorker)
     t1.start()
     t2.start()
     t1.join()
     t2.join()
-    
-    t3 = threading.Thread(target = mergingWorker)
     t3.start()
     t3.join()
 
     #as a simple test, printing the final sorted list
     print("The final sorted list is ", SortedFullList)
-
-    # https://www.youtube.com/watch?v=nKzEJWbkPbQ&ab_channel=ProgrammingwithMosh
