@@ -68,13 +68,7 @@ def mergingWorker() -> None:
 
 if __name__ == "__main__":
     #shared variables
-    testcase1 = [8,5,7,7,4,1,3,2]
-    testcase2 = [7, 3, 3, 2, 3, 1, 5, 8]
-    testcase3 = [7, -1, 3, 2, 1, 1, -5, 4]
-    testcase4 = []
-    testcase5 = [0]
-    testcase6 = [-5, 4, 2, -9]
-    testcase = testcase1
+    testcase = [8,5,7,7,4,1,3,2]
     sortedFirstHalf: list = []
     sortedSecondHalf: list = []
     SortedFullList: list = []
