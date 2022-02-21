@@ -6,17 +6,12 @@ import unittest
 
 class TestLab4:
 
-    testcase: list = []
-    sortedFirstHalf: list = []
-    sortedSecondHalf: list = []
-    sortedFullList: list = []
-
     def __init__(self, passedList: list):
         #shared variables
         self.testcase = passedList
-        TestLab4.sortedFirstHalf.clear()
-        TestLab4.sortedSecondHalf.clear()
-        TestLab4.sortedFullList.clear()
+        self.sortedFirstHalf : list = []
+        self.sortedSecondHalf: list = []
+        self.sortedFullList: list = []
     
     def sortingWorker(self, firstHalf: bool) -> None:
         """
@@ -51,9 +46,9 @@ class TestLab4:
 
         for item in tempList:                               
             if firstHalf:                                   # add to appropriate shared variable
-                TestLab4.sortedFirstHalf.append(item)      
+                self.sortedFirstHalf.append(item)      
             else:
-                TestLab4.sortedSecondHalf.append(item)
+                self.sortedSecondHalf.append(item)
         # print(f" {str(tempList)} from thread {threading.current_thread().name}")
 
     def mergingWorker(self) -> None:
@@ -63,20 +58,20 @@ class TestLab4:
             the shared variable sortedFullList.
         """
         i = j = 0                                                               # set loop variables to 0
-        size = len(TestLab4.sortedFirstHalf)                                    # size is len of half array
+        size = len(self.sortedFirstHalf)                                    # size is len of half array
         
         while i < size and j < size:                                            # traverse both lists before running out of values to compare on one list
-            if TestLab4.sortedFirstHalf[i] < TestLab4.sortedSecondHalf[j]:      # compare two values of list    
-                TestLab4.sortedFullList.append(TestLab4.sortedFirstHalf[i])     # if value in the firsthalf list is less, add to fullsorted list
+            if self.sortedFirstHalf[i] < self.sortedSecondHalf[j]:      # compare two values of list    
+                self.sortedFullList.append(self.sortedFirstHalf[i])     # if value in the firsthalf list is less, add to fullsorted list
                 i += 1                                                          # move on to the next value in the firsthalf list
             else:                                           
-                TestLab4.sortedFullList.append(TestLab4.sortedSecondHalf[j])    # otherwise value of secondhalf list is smaller, add this value to full sorted list
+                self.sortedFullList.append(self.sortedSecondHalf[j])    # otherwise value of secondhalf list is smaller, add this value to full sorted list
                 j += 1                                                          # move on to the next value in the secondhalf list
 
-        for item in TestLab4.sortedFirstHalf[i:]:                               # if items left in firstHalf, add to fullsorted list
-            TestLab4.sortedFullList.append(item)
+        for item in self.sortedFirstHalf[i:]:                               # if items left in firstHalf, add to fullsorted list
+            self.sortedFullList.append(item)
         for item in self.sortedSecondHalf[j:]:                                  # otherewise add leftover items in secondhalf to fullsorted list
-            TestLab4.sortedFullList.append(item)
+            self.sortedFullList.append(item)
         
     def testFunction(self) -> list:
         """ function to unit test 
@@ -90,7 +85,7 @@ class TestLab4:
         t2.join()
         t3.start()
         t3.join()
-        return TestLab4.sortedFullList                
+        return self.sortedFullList                
 
 class unitTest(unittest.TestCase):      
     
@@ -107,7 +102,7 @@ class unitTest(unittest.TestCase):
         self.assertListEqual(sorted(testCase2), newTest2.testFunction())
 
     def test3(self):
-        testCase3 = [7, -1, 3, 2, 1, 1, -5, 4]
+        testCase3 = [7, -1, 9, 2, 1, 1, -5, 4]
         newTest3 = TestLab4(testCase3)
         self.assertListEqual(sorted(testCase3), newTest3.testFunction())
 
