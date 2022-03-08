@@ -80,7 +80,7 @@ def consumer() -> None:
     
 
 if __name__ == "__main__":
-    SIZE = 5  #buffer size
+    SIZE = 5                       #buffer size
     buffer = circularBuffer(SIZE)  #initialize the buffer
     
     full = threading.Semaphore(0)         #full semaphore: number of full buffers
@@ -90,8 +90,10 @@ if __name__ == "__main__":
     mutex = threading.Lock()              #lock for protecting data on insertion or removal
     
     #complete the producer-consumer thread creation below
-    p = threading.Thread(target = producer).start()     # start producer thread
-    c = threading.Thread(target = consumer).start()     # start consumer thread
+    p = threading.Thread(target = producer)
+    c = threading.Thread(target = consumer)
+    p.start()     # start producer thread
+    c.start()     # start consumer thread
     p.join()
     c.join()
    
