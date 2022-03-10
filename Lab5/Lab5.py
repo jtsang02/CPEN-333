@@ -45,7 +45,7 @@ def producer() -> None:
         It must correctly use full, empty and mutex.
     """
     def waitForItemToBeProduced() -> int: #inner function; use as is
-        time.sleep(round(random.uniform(.1, .3), 2)) #a random delay (100 to 300 ms)
+        time.sleep(round(random.uniform(.001, .005), 3)) #a random delay (100 to 300 ms)
         return random.randint(1, 99)  #an item is produced
 
     for _ in range(SIZE * 2): #we just produce twice the buffer size for testing
@@ -54,8 +54,14 @@ def producer() -> None:
         #complete the function below here to correctly store the item in the circular buffer
         empty.acquire()         # decrement number of empty buffers
         full.release()          # increment number of full buffers
-        with mutex:             # safeguarding context manager
-            buffer.insert(item) # stores item in circular buffer
+        mutex.acquire()
+        try:
+            buffer.insert(item)
+        finally:
+            mutex.release()
+            
+        # with mutex:             # safeguarding context manager
+        #     buffer.insert(item) # stores item in circular buffer
             
 def consumer() -> None:
     """
@@ -67,21 +73,26 @@ def consumer() -> None:
         #write the code below to correctly remove an item from the circular buffer
         empty.release()             # increment number of empty buffers
         full.acquire()              # decrement number of full buffers
-        with mutex:                 # safeguarding context manager
-            item = buffer.remove()  # take out item from circular buffer
+        mutex.acquire()
+        try:
+            item = buffer.remove()
+        finally:
+            mutex.release()
+        # with mutex:                 # safeguarding context manager
+        #     item = buffer.remove()  # take out item from circular buffer
         #end of your implementation for this function
         
         #use the following code as is
         def waitForItemToBeConsumed(item) -> None: #inner function; use as is
-            time.sleep(round(random.uniform(.1, .3), 2)) #a random delay (100 to 300 ms)
+            time.sleep(round(random.uniform(.001, .005), 3)) #a random delay (100 to 300 ms)
             #to simulate consumption, item is thrown away here by just ignoring it
         waitForItemToBeConsumed(item)  #wait for the item to be consumed
         print(f"DEBUG: {item} consumed")
     
 
 if __name__ == "__main__":
-    SIZE = 5                       #buffer size
-    buffer = circularBuffer(SIZE)  #initialize the buffer
+    SIZE = 5                              #buffer size
+    buffer = circularBuffer(SIZE)         #initialize the buffer
     
     full = threading.Semaphore(0)         #full semaphore: number of full buffers
                                           #initial value set to 0
