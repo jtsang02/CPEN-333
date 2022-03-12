@@ -5,3 +5,4 @@ Lab4/tempCodeRunnerFile.py
 *.ipynb
 *.ipynb
 *.pyc
+.vscode/c_cpp_properties.json

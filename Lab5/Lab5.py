@@ -53,15 +53,9 @@ def producer() -> None:
         print(f"DEBUG: {item} produced")
         #complete the function below here to correctly store the item in the circular buffer
         empty.acquire()         # decrement number of empty buffers
-        full.release()          # increment number of full buffers
-        mutex.acquire()
-        try:
-            buffer.insert(item)
-        finally:
-            mutex.release()
-            
-        # with mutex:             # safeguarding context manager
-        #     buffer.insert(item) # stores item in circular buffer
+        with mutex:             # safeguarding context manager
+            buffer.insert(item) # stores item in circular buffer
+        full.release()          # increment number of full buffers    
             
 def consumer() -> None:
     """
@@ -71,15 +65,10 @@ def consumer() -> None:
     for _ in range(SIZE * 2): #we just consume twice the buffer size for testing
         
         #write the code below to correctly remove an item from the circular buffer
-        empty.release()             # increment number of empty buffers
         full.acquire()              # decrement number of full buffers
-        mutex.acquire()
-        try:
-            item = buffer.remove()
-        finally:
-            mutex.release()
-        # with mutex:                 # safeguarding context manager
-        #     item = buffer.remove()  # take out item from circular buffer
+        with mutex:                 # safeguarding context manager
+            item = buffer.remove()  # take out item from circular buffer
+        empty.release()             # increment number of empty buffers    
         #end of your implementation for this function
         
         #use the following code as is
