@@ -22,8 +22,7 @@ def philosopher(id: int, chopstick: list):
         leftChopstick = id
         rightChopstick = (id + 1) % 5      #5 is number of philosophers
 
-        if (id % 2 == 0):       #if even philospher, pick up right first then left chopstick
-        #to simplify, try statement not used here
+        if (id % 2 == 0):   #if even philospher, pick up right first then left chopstick
             chopstick[rightChopstick].acquire()
             print(f"DEBUG: philosopher{id} has chopstick{rightChopstick}")
             chopstick[leftChopstick].acquire()
