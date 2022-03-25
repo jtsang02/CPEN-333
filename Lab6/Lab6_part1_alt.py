@@ -24,8 +24,11 @@ def philosopher(id: int, chopstick: list, waiter: multiprocessing.Lock()):
         leftChopstick = id
         rightChopstick = (id + 1) % 5      #5 is number of philosophers
         
+        # print(f"The leftchopstick value of philosopher {id} is: {chopstick[leftChopstick].get_value()}")
+        # print(f"The rightchopstick value of philosopher {id} is: {chopstick[rightChopstick].get_value()}")
+
         # philosopher asks permission from waiter to pick up both chopsticks
-        with waiter:
+        if (chopstick[leftChopstick].get_value() == 1 and chopstick[rightChopstick].get_value() == 1):
             #to simplify, try statement not used here
             chopstick[leftChopstick].acquire()
             print(f"DEBUG: philosopher{id} has chopstick{leftChopstick}")
@@ -36,7 +39,7 @@ def philosopher(id: int, chopstick: list, waiter: multiprocessing.Lock()):
         
         print(f"DEBUG: philosopher{id} is to release chopstick{rightChopstick}")
         chopstick[rightChopstick].release()
-        print(f"DEBUG: philosopher{id} is to release chopstick{leftChopstick}")
+        print(f"DEBUG: philosoph er{id} is to release chopstick{leftChopstick}")
         chopstick[leftChopstick].release()
 
         thinkForAWhile()  #use this line as is
@@ -57,5 +60,3 @@ if __name__ == "__main__":
         philosopherProcessList[j].start()
     for k in range(numberOfPhilosophers): #join all child processes
         philosopherProcessList[k].join()
-
-# https://en.wikipedia.org/wiki/Dining_philosophers_problem
