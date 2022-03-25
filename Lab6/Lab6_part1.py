@@ -57,5 +57,3 @@ if __name__ == "__main__":
         philosopherProcessList[j].start()
     for k in range(numberOfPhilosophers): #join all child processes
         philosopherProcessList[k].join()
-
-# https://en.wikipedia.org/wiki/Dining_philosophers_problem
