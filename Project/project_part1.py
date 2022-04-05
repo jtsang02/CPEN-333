@@ -163,19 +163,16 @@ class Game():
         """
         NewSnakeCoordinates = self.calculateNewCoordinates()    # generate new snake coordinate
         #complete the method implementation below
-        
-        # update snake coordinate list
         self.snakeCoordinates.append(NewSnakeCoordinates)       # add new coordinate to list
         self.snakeCoordinates.pop(0)                            # remove first coordinate in list
+        self.isGameOver(NewSnakeCoordinates)                    # check if game is over
         
         if (self.rectangleCoordinates[0] == NewSnakeCoordinates[0] and
-            self.rectangleCoordinates[1] == NewSnakeCoordinates[1]): # if prey gets captured 
-            self.snakeCoordinates.append(NewSnakeCoordinates)   # add new coordinate to list
-            self.score += 1                                     # increment score by 1
-            self.queue.put({"score" : self.score})              # add task to queue to update score
-            self.createNewPrey()                                # create new prey
-        
-        self.isGameOver(NewSnakeCoordinates)                    # check if game is over
+            self.rectangleCoordinates[1] == NewSnakeCoordinates[1]):    # if prey gets captured 
+            self.snakeCoordinates.append(NewSnakeCoordinates)           # add new coordinate to list
+            self.score += 1                                             # increment score by 1
+            self.queue.put({"score" : self.score})                      # add task to queue to update score
+            self.createNewPrey()                                        # create new prey
         
     def calculateNewCoordinates(self) -> tuple:
         """
@@ -188,7 +185,7 @@ class Game():
         """
         lastX, lastY = self.snakeCoordinates[-1]       # this is the current coordinate of snake head
         #complete the method implementation below
-        newCoordinates = ()                       # instantiate new tuple to return
+        newCoordinates = ()                            # create new tuple to return
         if (self.direction == "Left"):                 # assume moves 10 units
             newCoordinates = lastX - 10, lastY
 
@@ -213,7 +210,13 @@ class Game():
         """
         x, y = snakeCoordinates
         #complete the method implementation below
-        pass
+        # check if snake goes out of bounds
+        endOfSnake = self.snakeCoordinates.copy()       # create copy of snake
+        endOfSnake.pop()                                # remove last coordinates
+        if (x < 0 or x > WINDOW_WIDTH or y < 0 or y > WINDOW_HEIGHT or
+            snakeCoordinates in endOfSnake):                 # if snake goes out of bounds or hits itself
+            self.gameNotOver = False                         # update gameNotOver field
+            self.queue.put({"game_over" : True})             # add game_over task to queue
 
     def createNewPrey(self) -> None:
         """ 
@@ -231,7 +234,6 @@ class Game():
         x = random.randrange(THRESHOLD, WINDOW_WIDTH - 5, 10)     # create random x coordinate
         y = random.randrange(THRESHOLD, WINDOW_HEIGHT - 5, 10)    # create random y coordinate
         self.rectangleCoordinates = x, y
-        print(self.rectangleCoordinates)                          # for debugging
         self.queue.put({"prey" : (x - 5, y - 5, x + 5, y + 5)})   # add prey task to queue with value as rectangle coordinates
 
 if __name__ == "__main__":
