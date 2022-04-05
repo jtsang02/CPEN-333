@@ -111,7 +111,7 @@ class Game():
         self.snakeCoordinates = [(495, 55), (485, 55), (475, 55),
                                  (465, 55), (455, 55)]
         #initial direction of the snake
-        self.rectangleCoordinates = ()
+        self.rectangleCoordinates = ()      # new variable for center coordinates of prey
         self.direction = "Left"
         self.gameNotOver = True
         self.createNewPrey()
@@ -127,7 +127,7 @@ class Game():
         SPEED = 0.15     #speed of snake updates (sec)
         while self.gameNotOver:
             #complete the method implementation below
-            self.move()
+            self.move()                                         # call move method
             self.queue.put({"move" : self.snakeCoordinates})    # add task to queue to move
             time.sleep(SPEED)                                   # add delay between moves
 
@@ -168,14 +168,15 @@ class Game():
         self.snakeCoordinates.append(NewSnakeCoordinates)       # add new coordinate to list
         self.snakeCoordinates.pop(0)                            # remove first coordinate in list
         
-        if (self.rectangleCoordinates in NewSnakeCoordinates):  # if prey gets captured, dummy boolean 
+        if (self.rectangleCoordinates[0] == NewSnakeCoordinates[0] and
+            self.rectangleCoordinates[1] == NewSnakeCoordinates[1]): # if prey gets captured 
             self.snakeCoordinates.append(NewSnakeCoordinates)   # add new coordinate to list
             self.score += 1                                     # increment score by 1
             self.queue.put({"score" : self.score})              # add task to queue to update score
             self.createNewPrey()                                # create new prey
         
         self.isGameOver(NewSnakeCoordinates)                    # check if game is over
-
+        
     def calculateNewCoordinates(self) -> tuple:
         """
             This method calculates and returns the new 
@@ -187,7 +188,7 @@ class Game():
         """
         lastX, lastY = self.snakeCoordinates[-1]       # this is the current coordinate of snake head
         #complete the method implementation below
-        newCoordinates = tuple()                       # instantiate new tuple to return
+        newCoordinates = ()                       # instantiate new tuple to return
         if (self.direction == "Left"):                 # assume moves 10 units
             newCoordinates = lastX - 10, lastY
 
@@ -227,10 +228,11 @@ class Game():
         """
         THRESHOLD = 15   #sets how close prey can be to borders
         #complete the method implementation below
-        x = random.randint(0 + THRESHOLD, WINDOW_WIDTH - THRESHOLD)     # create random x coordinate
-        y = random.randint(0 + THRESHOLD, WINDOW_HEIGHT - THRESHOLD)    # create random y coordinate
+        x = random.randrange(THRESHOLD, WINDOW_WIDTH - 5, 10)     # create random x coordinate
+        y = random.randrange(THRESHOLD, WINDOW_HEIGHT - 5, 10)    # create random y coordinate
         self.rectangleCoordinates = x, y
-        self.queue.put({"prey" : (x - 5, y - 5, x + 5, y + 5)})         # add prey task to queue with value as rectangle coordinates
+        print(self.rectangleCoordinates)                          # for debugging
+        self.queue.put({"prey" : (x - 5, y - 5, x + 5, y + 5)})   # add prey task to queue with value as rectangle coordinates
 
 if __name__ == "__main__":
     #some constants for our GUI
