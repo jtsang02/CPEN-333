@@ -1,6 +1,10 @@
 import threading as thread
 import random
 
+# reader - writer synchronization problem using 1 lock
+# https://codezup.com/python-program-reader-writer-problem-mutex/
+
+
 global x                #Shared Data
 x = 0
 lock = thread.Lock()    #Lock for synchronising access
@@ -35,5 +39,4 @@ if __name__ == '__main__':
 Thread1.join()
 Thread2.join()
 
-# print(x)
-# https://codezup.com/python-program-reader-writer-problem-mutex/
+print(x)
