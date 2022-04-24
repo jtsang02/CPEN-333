@@ -7,13 +7,13 @@ import random
 
 wrt = thread.Semaphore()        # used by writers and readers for mutual exclusion for writer
 mutex = thread.Semaphore()      # used by readers to ensure mutual exclusion for updating readCount 
-readCount = 0                   # keep track of how many processse/threads are currently read
-x = 0                           # shared memory
+readCount = 0                   # keep track of how many threads are currently read
+x = 0                           # shared memory used for writing activity
 
 # define reader function
 def reader():
     global readCount
-    global x
+    global x                        
     
     mutex.acquire()                 # always acquire mutex to update readcount variable 
     readCount += 1                  # number of readers has increased by 1

@@ -20,7 +20,7 @@ class Test(unittest.TestCase):
         self.assertEqual(arithmetic.subtract(a, b), a - b)
     
     def test_subtract2(self):
-        a, b = -91.0, -88.8 
+        a, b = -91.0, -88.8
         arithmetic = Arithmetic()
         self.assertEqual(arithmetic.subtract(a, b), a - b)
 
