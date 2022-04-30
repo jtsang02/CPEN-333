@@ -127,9 +127,9 @@ class Game():
         SPEED = 0.15     #speed of snake updates (sec)
         while self.gameNotOver:
             #complete the method implementation below
-            self.move()                                         # call move method
             self.queue.put({"move" : self.snakeCoordinates})    # add task to queue to move
             time.sleep(SPEED)                                   # add delay between moves
+            self.move()                                         # call move method
 
     def whenAnArrowKeyIsPressed(self, e) -> None:
         """ 
